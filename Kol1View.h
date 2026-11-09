@@ -1,59 +1,78 @@
-// Kol1View.h : interface of the CKol1View class  (I kolokvijum 2018 - Bager)
+
+// Kol2018View.h : interface of the CKol2018View class
+//
+
 #pragma once
-#include "DImage.h"
+#include "../Kol1-2024/DImage.h"
 
-class CKol1View : public CView
+
+class CKol2018View : public CView
 {
-protected:
-	CKol1View() noexcept;
-	DECLARE_DYNCREATE(CKol1View)
+protected: // create from serialization only
+	CKol2018View() noexcept;
+	DECLARE_DYNCREATE(CKol2018View)
 
+// Attributes
 public:
-	CKol1Doc* GetDocument() const;
+	CKol2018Doc* GetDocument() const;
 
-	virtual void OnDraw(CDC* pDC);
+// Operations
+public:
+
+// Overrides
+public:
+	virtual void OnDraw(CDC* pDC);  // overridden to draw this view
+	void Translate(CDC* pDC, double dX, double dY, bool rightMultiply);
+	void Rotate(CDC* pDC, float angle, bool rightMultiply);
+	void Scale(CDC* pDC, float scaleX, float scaleY, bool rightMultiply);
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	virtual ~CKol1View();
-
 protected:
-	// 1. slike i metafajl
-	DImage* m_pBager;
-	DImage* m_pArm1;
-	DImage* m_pArm2;
-	DImage* m_pPozadina;
-	HENHMETAFILE m_hFork;     // viljuska.emf
-	CRect m_rcFork;           // okvirni pravougaonik metafajla
-
-	// 10. atributi (uglovi u stepenima, pomeraj u pikselima)
-	double m_angleArm1;       // 1 / 2
-	double m_angleArm2;       // 3 / 4
-	double m_angleFork;       // 5 / 6
-	double m_moveX;           // <- / ->
-
-	// 2.
-	void Translate(CDC* pDC, float dX, float dY, bool rightMultiply);
-	void Rotate(CDC* pDC, float angle, bool rightMultiply);   // angle u stepenima
-	void Scale(CDC* pDC, float sX, float sY, bool rightMultiply);
-
-	// 3., 4.
 	void DrawBackground(CDC* pDC);
 	void DrawImgTransparent(CDC* pDC, DImage* pImage);
-
-	// 5. - 9.
 	void DrawBody(CDC* pDC);
 	void DrawArm1(CDC* pDC);
 	void DrawArm2(CDC* pDC);
 	void DrawFork(CDC* pDC);
 	void DrawExcavator(CDC* pDC);
+	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
+	virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
+	virtual void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
+
+	DImage* m_pBager;
+	DImage* m_pArm1;
+	DImage* m_pArm2;
+	DImage* m_pPozadina;
+	//metafajl viljuska
+	HENHMETAFILE m_hViljuska;
+	CRect m_rectViljuska; //okvirni pravougaonik za metafajl
+
+	double m_angleArm1; //1-2
+	double m_angleArm2;
+	double m_angleFork;
+	double m_moveX;
+
+
+// Implementation
+public:
+	virtual ~CKol2018View();
+#ifdef _DEBUG
+	virtual void AssertValid() const;
+	virtual void Dump(CDumpContext& dc) const;
+#endif
 
 protected:
+
+// Generated message map functions
+protected:
 	DECLARE_MESSAGE_MAP()
+
 public:
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 };
 
-#ifndef _DEBUG
-inline CKol1Doc* CKol1View::GetDocument() const
-   { return reinterpret_cast<CKol1Doc*>(m_pDocument); }
+#ifndef _DEBUG  // debug version in Kol2018View.cpp
+inline CKol2018Doc* CKol2018View::GetDocument() const
+   { return reinterpret_cast<CKol2018Doc*>(m_pDocument); }
 #endif
+
