@@ -1,4 +1,4 @@
-// Kol1View.h : interface of the CKol1View class  (I kolokvijum 2023 - Robot)
+// Kol1View.h : interface of the CKol1View class  (I kolokvijum 2018 - Bager)
 #pragma once
 #include "DImage.h"
 
@@ -16,38 +16,35 @@ public:
 	virtual ~CKol1View();
 
 protected:
-	// 1. slike
-	DImage* m_pGlava;
-	DImage* m_pNadkolenica;
-	DImage* m_pNadlaktica;
-	DImage* m_pPodkolenica;
-	DImage* m_pPodlaktica;
-	DImage* m_pSaka;
-	DImage* m_pStopalo;
-	DImage* m_pTelo;
+	// 1. slike i metafajl
+	DImage* m_pBager;
+	DImage* m_pArm1;
+	DImage* m_pArm2;
 	DImage* m_pPozadina;
+	HENHMETAFILE m_hFork;     // viljuska.emf
+	CRect m_rcFork;           // okvirni pravougaonik metafajla
 
-	// 6. atributi (uglovi u stepenima)
-	double m_angleNadlaktica;   // G / H  [-10, 90]
-	double m_anglePodlaktica;   // D / F  [-10, 80]
-	double m_angleSaka;         // A / S  [-10, 30]
-	double m_angleRobot;        // 1 / 2  rotacija celog robota
-	double m_scaleRobot;        // 1 / 2  skaliranje celog robota
-	double m_moveX;             // <- / -> pomeranje celog robota levo-desno
+	// 10. atributi (uglovi u stepenima, pomeraj u pikselima)
+	double m_angleArm1;       // 1 / 2
+	double m_angleArm2;       // 3 / 4
+	double m_angleFork;       // 5 / 6
+	double m_moveX;           // <- / ->
+
+	// 2.
+	void Translate(CDC* pDC, float dX, float dY, bool rightMultiply);
+	void Rotate(CDC* pDC, float angle, bool rightMultiply);   // angle u stepenima
+	void Scale(CDC* pDC, float sX, float sY, bool rightMultiply);
 
 	// 3., 4.
 	void DrawBackground(CDC* pDC);
 	void DrawImgTransparent(CDC* pDC, DImage* pImage);
 
-	// 5.
-	void Translate(CDC* pDC, float dX, float dY, bool rightMultiply);
-	void Rotate(CDC* pDC, float angle, bool rightMultiply);   // angle u stepenima
-	void Scale(CDC* pDC, float sX, float sY, bool rightMultiply);
-
-	// 7. - 9.
-	void DrawHalf(CDC* pDC);
-	void DrawHead(CDC* pDC);
-	void DrawRobot(CDC* pDC);
+	// 5. - 9.
+	void DrawBody(CDC* pDC);
+	void DrawArm1(CDC* pDC);
+	void DrawArm2(CDC* pDC);
+	void DrawFork(CDC* pDC);
+	void DrawExcavator(CDC* pDC);
 
 protected:
 	DECLARE_MESSAGE_MAP()
