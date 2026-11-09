@@ -127,8 +127,8 @@ void CKol1View::DrawImgTransparent(CDC* pDC, DImage* pImage)
 // ---------------------------------------------------------------
 void CKol1View::DrawBody(CDC* pDC)
 {
-	DrawImgTransparent(pDC, m_pBager);
 	Translate(pDC, BODY_ARM_X, BODY_ARM_Y, false);
+	DrawImgTransparent(pDC, m_pBager);
 }
 
 // ---------------------------------------------------------------
